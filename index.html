@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Game Plan</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-black: #0a0a0a;
+    --accent-cyan: #00fff9;
+    --accent-magenta: #ff006e;
+    --accent-yellow: #ffbe0b;
+    --text-white: #ffffff;
+    --text-gray: #b0b0b0;
+    --border-color: #2a2a2a;
+}
+
+body {
+    background: var(--bg-black);
+    color: var(--text-white);
+    font-family: 'Space Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 20% 50%, rgba(0, 255, 249, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(255, 0, 110, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.header .subtitle {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.nav-btn {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 3px solid var(--text-white);
+    background: var(--bg-black);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.8s ease-out backwards;
+}
+
+.nav-btn:nth-child(1) { animation-delay: 0.1s; }
+.nav-btn:nth-child(2) { animation-delay: 0.2s; }
+.nav-btn:nth-child(3) { animation-delay: 0.3s; }
+
+.nav-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.nav-btn:hover {
+    transform: scale(1.05) rotate(2deg);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 30px rgba(0, 255, 249, 0.4);
+}
+
+.nav-btn:hover img {
+    transform: scale(1.1);
+}
+
+.nav-btn.famille:hover { 
+    border-color: var(--accent-magenta); 
+    box-shadow: 0 0 30px rgba(255, 0, 110, 0.4);
+}
+
+.nav-btn.health:hover { 
+    border-color: var(--accent-cyan); 
+    box-shadow: 0 0 30px rgba(0, 255, 249, 0.4); 
+}
+
+.nav-btn.tsp:hover { 
+    border-color: var(--accent-yellow); 
+    box-shadow: 0 0 30px rgba(255, 190, 11, 0.4); 
+}
+
+.section-page {
+    display: none;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.section-page.active {
+    display: block;
+}
+
+.back-btn {
+    background: transparent;
+    border: 2px solid var(--text-gray);
+    color: var(--text-white);
+    padding: 12px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    margin-bottom: 40px;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+}
+
+.back-btn:hover {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+    transform: translateX(-5px);
+}
+
+.input-items {
+    display: grid;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.input-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+    animation: slideInLeft 0.5s ease-out backwards;
+}
+
+.input-item:nth-child(1) { animation-delay: 0.05s; }
+.input-item:nth-child(2) { animation-delay: 0.1s; }
+.input-item:nth-child(3) { animation-delay: 0.15s; }
+.input-item:nth-child(4) { animation-delay: 0.2s; }
+.input-item:nth-child(5) { animation-delay: 0.25s; }
+.input-item:nth-child(6) { animation-delay: 0.3s; }
+.input-item:nth-child(7) { animation-delay: 0.35s; }
+.input-item:nth-child(8) { animation-delay: 0.4s; }
+.input-item:nth-child(9) { animation-delay: 0.45s; }
+
+.input-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent-cyan);
+    transform: translateX(5px);
+}
+
+.input-item .icon-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid var(--border-color);
+}
+
+.input-item .icon-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.input-item .item-content {
+    flex: 1;
+}
+
+.input-item .item-label {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: var(--text-white);
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    appearance: none;
+    border: 2px solid var(--text-gray);
+    border-radius: 5px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked {
+    background: var(--accent-cyan);
+    border-color: var(--accent-cyan);
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--bg-black);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+input[type="number"] {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--border-color);
+    color: var(--text-white);
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 24px;
+    width: 100px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 15px rgba(0, 255, 249, 0.2);
+}
+
+input[type="text"] {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--border-color);
+    color: var(--text-white);
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 24px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 15px rgba(0, 255, 249, 0.2);
+}
+
+.stats-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.period-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--border-color);
+    color: var(--text-gray);
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+}
+
+.period-btn.active {
+    background: var(--accent-cyan);
+    border-color: var(--accent-cyan);
+    color: var(--bg-black);
+    font-weight: bold;
+}
+
+.period-btn:hover:not(.active) {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+}
+
+.stats-grid {
+    display: grid;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 25px;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.5s ease-out backwards;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.05s; }
+.stat-card:nth-child(2) { animation-delay: 0.1s; }
+.stat-card:nth-child(3) { animation-delay: 0.15s; }
+.stat-card:nth-child(4) { animation-delay: 0.2s; }
+.stat-card:nth-child(5) { animation-delay: 0.25s; }
+.stat-card:nth-child(6) { animation-delay: 0.3s; }
+.stat-card:nth-child(7) { animation-delay: 0.35s; }
+.stat-card:nth-child(8) { animation-delay: 0.4s; }
+.stat-card:nth-child(9) { animation-delay: 0.45s; }
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent-cyan);
+    transform: translateY(-3px);
+}
+
+.stat-card .stat-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.stat-card .stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+}
+
+.stat-card .stat-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.stat-card .stat-label {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-card .stat-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 10px 0;
+}
+
+.stat-card .stat-detail {
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+
+.product-form {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary {
+    background: var(--accent-cyan);
+    border: none;
+    color: var(--bg-black);
+    padding: 15px 40px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background: var(--text-white);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 255, 249, 0.3);
+}
+
+.product-list {
+    display: grid;
+    gap: 15px;
+}
+
+.product-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-name {
+    font-size: 1.1rem;
+    color: var(--text-white);
+    margin-bottom: 5px;
+}
+
+.product-price {
+    color: var(--accent-yellow);
+    font-weight: bold;
+}
+
+.product-sales {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.product-sales input {
+    width: 80px;
+}
+
+.save-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--accent-magenta);
+    border: none;
+    color: var(--text-white);
+    padding: 18px 35px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 20px rgba(255, 0, 110, 0.4);
+    z-index: 1000;
+    display: none;
+}
+
+.save-btn:hover {
+    background: var(--text-white);
+    color: var(--bg-black);
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(255, 0, 110, 0.6);
+}
+
+.save-btn.saving {
+    background: var(--text-gray);
+    pointer-events: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 600px) {
+    .nav-btn {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .nav-buttons {
+        gap: 25px;
+    }
+    
+    .input-item .icon-circle {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .stat-card .stat-value {
+        font-size: 2rem;
+    }
+    
+    .save-btn {
+        bottom: 20px;
+        right: 20px;
+        padding: 15px 25px;
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <!-- Home Page -->
+    <div id="home-page" class="section-page active">
+        <div class="header">
+            <h1>2026 GAME PLAN</h1>
+            <div class="subtitle">Family • Health • Business</div>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-btn famille" onclick="showSection('famille')">
+                <img src="https://i.imgur.com/9s49jXZ.png" alt="Famille">
+            </button>
+            <button class="nav-btn health" onclick="showSection('health')">
+                <img src="https://i.imgur.com/vDxCMQK.png" alt="Health">
+            </button>
+            <button class="nav-btn tsp" onclick="showSection('tsp')">
+                <img src="https://i.imgur.com/CF1QIRQ.png" alt="The Silent Postman">
+            </button>
+        </div>
+    </div>
+
+    <!-- Famille Section -->
+    <div id="famille-page" class="section-page">
+        <button class="back-btn" onclick="showHome()">← Retour</button>
+        <div class="header">
+            <h1>FAMILLE</h1>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="showSubSection('famille', 'input')">
+                <img src="https://i.imgur.com/oNJDavT.jpeg" alt="Input">
+            </button>
+            <button class="nav-btn" onclick="showSubSection('famille', 'stats')">
+                <img src="https://i.imgur.com/Jj1Jfgt.png" alt="Statistiques">
+            </button>
+        </div>
+    </div>
+
+    <!-- Famille Input -->
+    <div id="famille-input" class="section-page">
+        <button class="back-btn" onclick="showSection('famille')">← Retour</button>
+        <div class="header">
+            <h1>FAMILLE - INPUT</h1>
+        </div>
+        <div class="input-items">
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/CF1QIRQ.png" alt="Surprise">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">Surprise pour Babe</div>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="surprise-babe" onchange="markChanged()">
+                </div>
+            </div>
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/e7ngyj8.jpeg" alt="Jeu de société">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">Jeu de société</div>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="jeu-societe" onchange="markChanged()">
+                </div>
+            </div>
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/7rMdglA.jpeg" alt="Quilles">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">Quilles</div>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="quilles" onchange="markChanged()">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Famille Stats -->
+    <div id="famille-stats" class="section-page">
+        <button class="back-btn" onclick="showSection('famille')">← Retour</button>
+        <div class="header">
+            <h1>FAMILLE - STATS</h1>
+        </div>
+        <div class="stats-controls">
+            <button class="period-btn active" onclick="changePeriod('famille', 7)">7 jours</button>
+            <button class="period-btn" onclick="changePeriod('famille', 30)">30 jours</button>
+            <button class="period-btn" onclick="changePeriod('famille', 'all')">Tout</button>
+        </div>
+        <div class="stats-grid" id="famille-stats-grid"></div>
+    </div>
+
+    <!-- Health Section -->
+    <div id="health-page" class="section-page">
+        <button class="back-btn" onclick="showHome()">← Retour</button>
+        <div class="header">
+            <h1>HEALTH</h1>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="showSubSection('health', 'input')">
+                <img src="https://i.imgur.com/oNJDavT.jpeg" alt="Input">
+            </button>
+            <button class="nav-btn" onclick="showSubSection('health', 'stats')">
+                <img src="https://i.imgur.com/Jj1Jfgt.png" alt="Statistiques">
+            </button>
+        </div>
+    </div>
+
+    <!-- Health Input -->
+    <div id="health-input" class="section-page">
+        <button class="back-btn" onclick="showSection('health')">← Retour</button>
+        <div class="header">
+            <h1>HEALTH - INPUT</h1>
+            <div class="subtitle">Body • Mind • Spirit</div>
+        </div>
+        <div class="input-items">
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/beT9a2C.png" alt="Push-ups">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">50 push-ups</div>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="pushups" onchange="markChanged()">
+                </div>
+            </div>
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/4PJk9dV.png" alt="Squats">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">50 squats</div>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="squats" onchange="markChanged()">
+                </div>
+            </div>
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/arsp6Ln.png" alt="Rope jumping">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">5 min. of rope jumping</div>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="rope-jump" onchange="markChanged()">
+                </div>
+            </div>
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/yXvt4wV.png" alt="Reading">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">36 min. of reading before bed</div>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="reading" onchange="markChanged()">
+                </div>
+            </div>
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/zgmq864.png" alt="TSP Work">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">Working 90 min. on The Silent Postman</div>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="tsp-work" onchange="markChanged()">
+                </div>
+            </div>
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/xRbtzsh.png" alt="Chess">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">5 chess puzzles</div>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="chess" onchange="markChanged()">
+                </div>
+            </div>
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/kLEUksv.png" alt="Meditation">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">Meditate (minutes)</div>
+                </div>
+                <input type="number" id="meditation-min" min="0" placeholder="17" onchange="markChanged()">
+            </div>
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/OeYaj8o.png" alt="Journal">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">Journal 9 min.</div>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="journal" onchange="markChanged()">
+                </div>
+            </div>
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/8WW6AMj.png" alt="Breathwork">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">The 3 Minutes Breathwork Challenge!</div>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="breathwork" onchange="markChanged()">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Health Stats -->
+    <div id="health-stats" class="section-page">
+        <button class="back-btn" onclick="showSection('health')">← Retour</button>
+        <div class="header">
+            <h1>HEALTH - STATS</h1>
+        </div>
+        <div class="stats-controls">
+            <button class="period-btn active" onclick="changePeriod('health', 7)">7 jours</button>
+            <button class="period-btn" onclick="changePeriod('health', 30)">30 jours</button>
+            <button class="period-btn" onclick="changePeriod('health', 'all')">Tout</button>
+        </div>
+        <div class="stats-grid" id="health-stats-grid"></div>
+    </div>
+
+    <!-- TSP Section -->
+    <div id="tsp-page" class="section-page">
+        <button class="back-btn" onclick="showHome()">← Retour</button>
+        <div class="header">
+            <h1>THE SILENT POSTMAN</h1>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="showSubSection('tsp', 'input')">
+                <img src="https://i.imgur.com/oNJDavT.jpeg" alt="Input">
+            </button>
+            <button class="nav-btn" onclick="showSubSection('tsp', 'stats')">
+                <img src="https://i.imgur.com/Jj1Jfgt.png" alt="Statistiques">
+            </button>
+        </div>
+    </div>
+
+    <!-- TSP Input -->
+    <div id="tsp-input" class="section-page">
+        <button class="back-btn" onclick="showSection('tsp')">← Retour</button>
+        <div class="header">
+            <h1>THE SILENT POSTMAN - INPUT</h1>
+        </div>
+        
+        <div class="product-form">
+            <h3 style="margin-bottom: 20px; color: var(--accent-cyan);">Nouveau produit</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nom du produit</label>
+                    <input type="text" id="new-product-name" placeholder="Ex: Pop-up Birthday Card">
+                </div>
+                <div class="form-group">
+                    <label>Prix ($)</label>
+                    <input type="number" id="new-product-price" min="0" step="0.01" placeholder="9.99">
+                </div>
+            </div>
+            <button class="btn-primary" onclick="addProduct()">Ajouter le produit</button>
+        </div>
+
+        <div class="input-items">
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/1hJwcDg.png" alt="Produits">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">Produits vendus aujourd'hui</div>
+                    <div id="products-list" class="product-list" style="margin-top: 15px;"></div>
+                </div>
+            </div>
+            <div class="input-item">
+                <div class="icon-circle">
+                    <img src="https://i.imgur.com/jBKgXCL.png" alt="Vidéo">
+                </div>
+                <div class="item-content">
+                    <div class="item-label">Nouvelle vidéo publiée sur Instagram</div>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="video-ig" onchange="markChanged()">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TSP Stats -->
+    <div id="tsp-stats" class="section-page">
+        <button class="back-btn" onclick="showSection('tsp')">← Retour</button>
+        <div class="header">
+            <h1>THE SILENT POSTMAN - STATS</h1>
+        </div>
+        <div class="stats-controls">
+            <button class="period-btn active" onclick="changePeriod('tsp', 7)">7 jours</button>
+            <button class="period-btn" onclick="changePeriod('tsp', 30)">30 jours</button>
+            <button class="period-btn" onclick="changePeriod('tsp', 'all')">Tout</button>
+        </div>
+        <div class="stats-grid" id="tsp-stats-grid"></div>
+    </div>
+</div>
+
+<button class="save-btn" id="save-btn" onclick="saveData()">SAUVEGARDER</button>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getDatabase, ref, set, get, push, update, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+// ========================================
+// CONFIGURATION FIREBASE
+// ========================================
+// Your web app's Firebase configuration
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyAEZdJUIDX1S4ZvzNPm9KnnJL4Zx3yqY8g",
+
+  authDomain: "game-plan-12326.firebaseapp.com",
+
+  databaseURL: "https://game-plan-12326-default-rtdb.firebaseio.com",
+
+  projectId: "game-plan-12326",
+
+  storageBucket: "game-plan-12326.firebasestorage.app",
+
+  messagingSenderId: "1072945907042",
+
+  appId: "1:1072945907042:web:8ecd83b9052c02a0ba983b"
+
+};
+
+
+// Initialiser Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+// ========================================
+// VARIABLES GLOBALES
+// ========================================
+let hasChanges = false;
+let currentPeriods = {
+    famille: 7,
+    health: 7,
+    tsp: 7
+};
+
+let allData = {
+    dailyLogs: {},
+    products: {},
+    sales: {}
+};
+
+// ========================================
+// FONCTIONS DE NAVIGATION
+// ========================================
+window.showHome = function() {
+    hideAllPages();
+    document.getElementById('home-page').classList.add('active');
+};
+
+window.showSection = function(section) {
+    hideAllPages();
+    document.getElementById(section + '-page').classList.add('active');
+};
+
+window.showSubSection = function(section, type) {
+    hideAllPages();
+    document.getElementById(section + '-' + type).classList.add('active');
+    if (type === 'stats') {
+        loadStats(section);
+    }
+};
+
+function hideAllPages() {
+    document.querySelectorAll('.section-page').forEach(page => {
+        page.classList.remove('active');
+    });
+}
+
+// ========================================
+// GESTION DES CHANGEMENTS
+// ========================================
+window.markChanged = function() {
+    hasChanges = true;
+    document.getElementById('save-btn').style.display = 'block';
+};
+
+// ========================================
+// CHARGER LES DONNÉES
+// ========================================
+function loadData() {
+    const dataRef = ref(database, '/');
+    onValue(dataRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            allData = {
+                dailyLogs: data.dailyLogs || {},
+                products: data.products || {},
+                sales: data.sales || {}
+            };
+            loadTodayData();
+            loadProducts();
+        }
+    });
+}
+
+function loadTodayData() {
+    const today = getTodayDate();
+    const todayLog = allData.dailyLogs[today];
+    
+    if (todayLog) {
+        // Famille
+        document.getElementById('surprise-babe').checked = todayLog.surprise_babe || false;
+        document.getElementById('jeu-societe').checked = todayLog.jeu_societe || false;
+        document.getElementById('quilles').checked = todayLog.quilles || false;
+        
+        // Health
+        document.getElementById('pushups').checked = todayLog.pushups || false;
+        document.getElementById('squats').checked = todayLog.squats || false;
+        document.getElementById('rope-jump').checked = todayLog.rope_jump || false;
+        document.getElementById('reading').checked = todayLog.reading || false;
+        document.getElementById('tsp-work').checked = todayLog.tsp_work || false;
+        document.getElementById('chess').checked = todayLog.chess || false;
+        document.getElementById('meditation-min').value = todayLog.meditation_min || '';
+        document.getElementById('journal').checked = todayLog.journal || false;
+        document.getElementById('breathwork').checked = todayLog.breathwork || false;
+        
+        // TSP
+        document.getElementById('video-ig').checked = todayLog.video_ig || false;
+    }
+}
+
+function loadProducts() {
+    const productsList = document.getElementById('products-list');
+    productsList.innerHTML = '';
+    
+    const products = allData.products;
+    for (let productId in products) {
+        const product = products[productId];
+        const productDiv = document.createElement('div');
+        productDiv.className = 'product-item';
+        productDiv.innerHTML = `
+            <div class="product-info">
+                <div class="product-name">${product.name}</div>
+                <div class="product-price">${product.price}$</div>
+            </div>
+            <div class="product-sales">
+                <input type="number" id="product-sale-${productId}" min="0" value="0" onchange="window.markChanged()">
+            </div>
+        `;
+        productsList.appendChild(productDiv);
+    }
+}
+
+// ========================================
+// AJOUTER UN PRODUIT
+// ========================================
+window.addProduct = async function() {
+    const name = document.getElementById('new-product-name').value.trim();
+    const price = parseFloat(document.getElementById('new-product-price').value);
+    
+    if (!name || isNaN(price)) {
+        alert('Veuillez remplir tous les champs');
+        return;
+    }
+    
+    try {
+        const newProductRef = push(ref(database, 'products'));
+        await set(newProductRef, {
+            name: name,
+            price: price
+        });
+        
+        document.getElementById('new-product-name').value = '';
+        document.getElementById('new-product-price').value = '';
+        alert('Produit ajouté avec succès!');
+    } catch (error) {
+        console.error('Error adding product:', error);
+        alert('Erreur lors de l\'ajout du produit');
+    }
+};
+
+// ========================================
+// SAUVEGARDER LES DONNÉES
+// ========================================
+window.saveData = async function() {
+    const saveBtn = document.getElementById('save-btn');
+    saveBtn.classList.add('saving');
+    saveBtn.textContent = 'SAUVEGARDE...';
+    
+    const today = getTodayDate();
+    
+    // Collecter les données quotidiennes
+    const dailyData = {
+        date: today,
+        surprise_babe: document.getElementById('surprise-babe').checked,
+        jeu_societe: document.getElementById('jeu-societe').checked,
+        quilles: document.getElementById('quilles').checked,
+        pushups: document.getElementById('pushups').checked,
+        squats: document.getElementById('squats').checked,
+        rope_jump: document.getElementById('rope-jump').checked,
+        reading: document.getElementById('reading').checked,
+        tsp_work: document.getElementById('tsp-work').checked,
+        chess: document.getElementById('chess').checked,
+        meditation_min: parseInt(document.getElementById('meditation-min').value) || 0,
+        journal: document.getElementById('journal').checked,
+        breathwork: document.getElementById('breathwork').checked,
+        video_ig: document.getElementById('video-ig').checked
+    };
+    
+    // Collecter les ventes
+    const salesData = [];
+    const products = allData.products;
+    for (let productId in products) {
+        const unitsInput = document.getElementById(`product-sale-${productId}`);
+        const units = parseInt(unitsInput.value) || 0;
+        if (units > 0) {
+            salesData.push({
+                date: today,
+                product_id: productId,
+                product_name: products[productId].name,
+                units_sold: units
+            });
+        }
+    }
+    
+    try {
+        // Sauvegarder les données quotidiennes
+        await set(ref(database, `dailyLogs/${today}`), dailyData);
+        
+        // Sauvegarder les ventes
+        for (let sale of salesData) {
+            const newSaleRef = push(ref(database, 'sales'));
+            await set(newSaleRef, sale);
+        }
+        
+        hasChanges = false;
+        saveBtn.textContent = 'SAUVEGARDÉ!';
+        setTimeout(() => {
+            saveBtn.textContent = 'SAUVEGARDER';
+            saveBtn.classList.remove('saving');
+            saveBtn.style.display = 'none';
+        }, 2000);
+    } catch (error) {
+        console.error('Error saving data:', error);
+        alert('Erreur lors de la sauvegarde');
+        saveBtn.textContent = 'ERREUR';
+        saveBtn.classList.remove('saving');
+    }
+};
+
+// ========================================
+// STATISTIQUES
+// ========================================
+window.changePeriod = function(section, period) {
+    currentPeriods[section] = period;
+    
+    const container = document.getElementById(`${section}-stats`);
+    container.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    loadStats(section);
+};
+
+function loadStats(section) {
+    const period = currentPeriods[section];
+    const gridId = `${section}-stats-grid`;
+    const grid = document.getElementById(gridId);
+    
+    // Filtrer les données selon la période
+    let filteredLogs = {};
+    const allLogs = allData.dailyLogs;
+    
+    if (period === 'all') {
+        filteredLogs = allLogs;
+    } else {
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - period);
+        
+        for (let date in allLogs) {
+            if (new Date(date) >= cutoffDate) {
+                filteredLogs[date] = allLogs[date];
+            }
+        }
+    }
+    
+    if (section === 'famille') {
+        loadFamilleStats(grid, filteredLogs);
+    } else if (section === 'health') {
+        loadHealthStats(grid, filteredLogs);
+    } else if (section === 'tsp') {
+        loadTSPStats(grid, filteredLogs);
+    }
+}
+
+function loadFamilleStats(grid, logs) {
+    let surpriseCount = 0;
+    let jeuCount = 0;
+    let quillesCount = 0;
+    
+    for (let date in logs) {
+        const log = logs[date];
+        if (log.surprise_babe) surpriseCount++;
+        if (log.jeu_societe) jeuCount++;
+        if (log.quilles) quillesCount++;
+    }
+    
+    grid.innerHTML = `
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/CF1QIRQ.png" alt="Surprise">
+                </div>
+                <div class="stat-label">Surprises pour Babe</div>
+            </div>
+            <div class="stat-value">${surpriseCount}</div>
+            <div class="stat-detail">Total de surprises préparées</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/e7ngyj8.jpeg" alt="Jeu">
+                </div>
+                <div class="stat-label">Jeux de société</div>
+            </div>
+            <div class="stat-value">${jeuCount}</div>
+            <div class="stat-detail">Journées de jeux en famille</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/7rMdglA.jpeg" alt="Quilles">
+                </div>
+                <div class="stat-label">Quilles</div>
+            </div>
+            <div class="stat-value">${quillesCount}</div>
+            <div class="stat-detail">Parties de quilles jouées</div>
+        </div>
+    `;
+}
+
+function loadHealthStats(grid, logs) {
+    let pushupDays = 0;
+    let squatDays = 0;
+    let ropeJumpDays = 0;
+    let readingDays = 0;
+    let tspDays = 0;
+    let chessDays = 0;
+    let totalMeditation = 0;
+    let breathworkDays = 0;
+    
+    // Calculer les streaks
+    const sortedDates = Object.keys(logs).sort((a, b) => new Date(b) - new Date(a));
+    let journalStreak = 0;
+    let tspStreak = 0;
+    
+    for (let date of sortedDates) {
+        const log = logs[date];
+        if (log.journal) {
+            journalStreak++;
+        } else {
+            break;
+        }
+    }
+    
+    for (let date of sortedDates) {
+        const log = logs[date];
+        if (log.tsp_work) {
+            tspStreak++;
+        } else {
+            break;
+        }
+    }
+    
+    for (let date in logs) {
+        const log = logs[date];
+        if (log.pushups) pushupDays++;
+        if (log.squats) squatDays++;
+        if (log.rope_jump) ropeJumpDays++;
+        if (log.reading) readingDays++;
+        if (log.tsp_work) tspDays++;
+        if (log.chess) chessDays++;
+        if (log.breathwork) breathworkDays++;
+        totalMeditation += log.meditation_min || 0;
+    }
+    
+    const logCount = Object.keys(logs).length;
+    const avgMeditation = logCount > 0 ? (totalMeditation / logCount).toFixed(1) : 0;
+    
+    grid.innerHTML = `
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/beT9a2C.png" alt="Push-ups">
+                </div>
+                <div class="stat-label">Push-ups</div>
+            </div>
+            <div class="stat-value">${pushupDays * 50}</div>
+            <div class="stat-detail">Total effectués</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/4PJk9dV.png" alt="Squats">
+                </div>
+                <div class="stat-label">Squats</div>
+            </div>
+            <div class="stat-value">${squatDays * 50}</div>
+            <div class="stat-detail">Total effectués</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/arsp6Ln.png" alt="Rope">
+                </div>
+                <div class="stat-label">Rope Jumping</div>
+            </div>
+            <div class="stat-value">${((ropeJumpDays * 5) / 60).toFixed(1)}h</div>
+            <div class="stat-detail">Temps total</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/yXvt4wV.png" alt="Reading">
+                </div>
+                <div class="stat-label">Reading</div>
+            </div>
+            <div class="stat-value">${((readingDays * 36) / 60).toFixed(1)}h</div>
+            <div class="stat-detail">Temps total de lecture</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/zgmq864.png" alt="TSP">
+                </div>
+                <div class="stat-label">The Silent Postman</div>
+            </div>
+            <div class="stat-value">${((tspDays * 90) / 60).toFixed(1)}h</div>
+            <div class="stat-detail">Temps total • Streak: ${tspStreak} jours</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/xRbtzsh.png" alt="Chess">
+                </div>
+                <div class="stat-label">Chess Puzzles</div>
+            </div>
+            <div class="stat-value">${chessDays * 5}</div>
+            <div class="stat-detail">Total de puzzles résolus</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/kLEUksv.png" alt="Meditation">
+                </div>
+                <div class="stat-label">Meditation</div>
+            </div>
+            <div class="stat-value">${(totalMeditation / 60).toFixed(1)}h</div>
+            <div class="stat-detail">Total • Moyenne: ${avgMeditation} min/jour</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/OeYaj8o.png" alt="Journal">
+                </div>
+                <div class="stat-label">Journal</div>
+            </div>
+            <div class="stat-value">${journalStreak}</div>
+            <div class="stat-detail">Jours d'affilée</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/8WW6AMj.png" alt="Breathwork">
+                </div>
+                <div class="stat-label">Breathwork</div>
+            </div>
+            <div class="stat-value">${breathworkDays * 3}</div>
+            <div class="stat-detail">Total de minutes</div>
+        </div>
+    `;
+}
+
+function loadTSPStats(grid, logs) {
+    // Calculer les ventes par produit
+    let salesByProduct = {};
+    let totalSales = 0;
+    
+    const sales = allData.sales;
+    const products = allData.products;
+    
+    for (let saleId in sales) {
+        const sale = sales[saleId];
+        const productId = sale.product_id;
+        const productName = sale.product_name;
+        
+        if (!salesByProduct[productName]) {
+            salesByProduct[productName] = { units: 0, revenue: 0 };
+        }
+        
+        salesByProduct[productName].units += sale.units_sold;
+        
+        if (products[productId]) {
+            const revenue = sale.units_sold * products[productId].price;
+            salesByProduct[productName].revenue += revenue;
+            totalSales += revenue;
+        }
+    }
+    
+    let videoCount = 0;
+    for (let date in logs) {
+        if (logs[date].video_ig) videoCount++;
+    }
+    
+    let statsHTML = '';
+    
+    // Cartes de produits
+    for (let productName in salesByProduct) {
+        const data = salesByProduct[productName];
+        statsHTML += `
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <img src="https://i.imgur.com/1hJwcDg.png" alt="Product">
+                    </div>
+                    <div class="stat-label">${productName}</div>
+                </div>
+                <div class="stat-value">${data.units}</div>
+                <div class="stat-detail">Unités • ${data.revenue.toFixed(2)}$</div>
+            </div>
+        `;
+    }
+    
+    // Total des ventes
+    statsHTML += `
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/1hJwcDg.png" alt="Total">
+                </div>
+                <div class="stat-label">Ventes totales</div>
+            </div>
+            <div class="stat-value">${totalSales.toFixed(2)}$</div>
+            <div class="stat-detail">Revenus générés</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <img src="https://i.imgur.com/jBKgXCL.png" alt="Videos">
+                </div>
+                <div class="stat-label">Vidéos Instagram</div>
+            </div>
+            <div class="stat-value">${videoCount}</div>
+            <div class="stat-detail">Vidéos publiées</div>
+        </div>
+    `;
+    
+    grid.innerHTML = statsHTML;
+}
+
+// ========================================
+// UTILITAIRES
+// ========================================
+function getTodayDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+// ========================================
+// INITIALISATION
+// ========================================
+window.addEventListener('load', () => {
+    loadData();
+});
+
+// Avertir avant de quitter si des changements non sauvegardés
+window.addEventListener('beforeunload', (e) => {
+    if (hasChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+    }
+});
+</script>
+</body>
+</html>
