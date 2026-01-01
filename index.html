@@ -496,6 +496,29 @@ input[type="text"]:focus {
     width: 80px;
 }
 
+.delete-product-btn {
+    background: transparent;
+    border: 2px solid var(--border-color);
+    color: var(--text-gray);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.delete-product-btn:hover {
+    border-color: var(--accent-magenta);
+    color: var(--accent-magenta);
+    background: rgba(255, 0, 110, 0.1);
+    transform: scale(1.1);
+}
+
 .save-btn {
     position: fixed;
     bottom: 30px;
@@ -911,26 +934,16 @@ import { getDatabase, ref, set, get, push, update, onValue } from 'https://www.g
 // ========================================
 // CONFIGURATION FIREBASE
 // ========================================
-// Your web app's Firebase configuration
-
+// REMPLACE CES VALEURS PAR CELLES DE TON PROJET FIREBASE
 const firebaseConfig = {
-
-  apiKey: "AIzaSyAEZdJUIDX1S4ZvzNPm9KnnJL4Zx3yqY8g",
-
-  authDomain: "game-plan-12326.firebaseapp.com",
-
-  databaseURL: "https://game-plan-12326-default-rtdb.firebaseio.com",
-
-  projectId: "game-plan-12326",
-
-  storageBucket: "game-plan-12326.firebasestorage.app",
-
-  messagingSenderId: "1072945907042",
-
-  appId: "1:1072945907042:web:8ecd83b9052c02a0ba983b"
-
+    apiKey: "TON_API_KEY",
+    authDomain: "TON_AUTH_DOMAIN",
+    databaseURL: "TON_DATABASE_URL",
+    projectId: "TON_PROJECT_ID",
+    storageBucket: "TON_STORAGE_BUCKET",
+    messagingSenderId: "TON_MESSAGING_SENDER_ID",
+    appId: "TON_APP_ID"
 };
-
 
 // Initialiser Firebase
 const app = initializeApp(firebaseConfig);
@@ -1048,6 +1061,7 @@ function loadProducts() {
             </div>
             <div class="product-sales">
                 <input type="number" id="product-sale-${productId}" min="0" value="0" onchange="window.markChanged()">
+                <button class="delete-product-btn" onclick="window.deleteProduct('${productId}', '${product.name}')" title="Supprimer ce produit">×</button>
             </div>
         `;
         productsList.appendChild(productDiv);
@@ -1079,6 +1093,36 @@ window.addProduct = async function() {
     } catch (error) {
         console.error('Error adding product:', error);
         alert('Erreur lors de l\'ajout du produit');
+    }
+};
+
+// ========================================
+// SUPPRIMER UN PRODUIT
+// ========================================
+window.deleteProduct = async function(productId, productName) {
+    // Demander confirmation
+    if (!confirm(`Êtes-vous sûr de vouloir supprimer "${productName}" ?\n\nToutes les ventes associées à ce produit seront également supprimées.`)) {
+        return;
+    }
+    
+    try {
+        const { ref: dbRef, remove } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js');
+        
+        // Supprimer le produit
+        await remove(dbRef(database, `products/${productId}`));
+        
+        // Supprimer toutes les ventes associées à ce produit
+        const sales = allData.sales;
+        for (let saleId in sales) {
+            if (sales[saleId].product_id === productId) {
+                await remove(dbRef(database, `sales/${saleId}`));
+            }
+        }
+        
+        alert('Produit supprimé avec succès!');
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        alert('Erreur lors de la suppression du produit');
     }
 };
 
