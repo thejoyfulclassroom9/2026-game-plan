@@ -779,11 +779,9 @@ display: none !important;
 <img src="https://i.imgur.com/beT9a2C.png" alt="Push-ups">
 </div>
 <div class="item-content">
-<div class="item-label">50 push-ups</div>
+<div class="item-label">Push-ups</div>
 </div>
-<div class="checkbox-wrapper">
-<input type="checkbox" id="pushups" onchange="markChanged()">
-</div>
+<input type="number" id="pushups" min="0" placeholder="50" onchange="markChanged()">
 </div>
 
 <div class="input-item">
@@ -791,11 +789,9 @@ display: none !important;
 <img src="https://i.imgur.com/4PJk9dV.png" alt="Squats">
 </div>
 <div class="item-content">
-<div class="item-label">50 squats</div>
+<div class="item-label">Squats</div>
 </div>
-<div class="checkbox-wrapper">
-<input type="checkbox" id="squats" onchange="markChanged()">
-</div>
+<input type="number" id="squats" min="0" placeholder="50" onchange="markChanged()">
 </div>
 
 <div class="input-item">
@@ -803,11 +799,9 @@ display: none !important;
 <img src="https://i.imgur.com/arsp6Ln.png" alt="Rope jumping">
 </div>
 <div class="item-content">
-<div class="item-label">5 min. of rope jumping</div>
+<div class="item-label">Rope jumping (minutes)</div>
 </div>
-<div class="checkbox-wrapper">
-<input type="checkbox" id="rope-jump" onchange="markChanged()">
-</div>
+<input type="number" id="rope-jump" min="0" placeholder="5" onchange="markChanged()">
 </div>
 
 <div class="input-item">
@@ -815,11 +809,9 @@ display: none !important;
 <img src="https://i.imgur.com/yXvt4wV.png" alt="Reading">
 </div>
 <div class="item-content">
-<div class="item-label">36 min. of reading before bed</div>
+<div class="item-label">Reading (minutes)</div>
 </div>
-<div class="checkbox-wrapper">
-<input type="checkbox" id="reading" onchange="markChanged()">
-</div>
+<input type="number" id="reading" min="0" placeholder="36" onchange="markChanged()">
 </div>
 
 <div class="input-item">
@@ -827,11 +819,9 @@ display: none !important;
 <img src="https://i.imgur.com/zgmq864.png" alt="TSP Work">
 </div>
 <div class="item-content">
-<div class="item-label">Working 90 min. on The Silent Postman</div>
+<div class="item-label">Working on The Silent Postman (minutes)</div>
 </div>
-<div class="checkbox-wrapper">
-<input type="checkbox" id="tsp-work" onchange="markChanged()">
-</div>
+<input type="number" id="tsp-work" min="0" placeholder="90" onchange="markChanged()">
 </div>
 
 <div class="input-item">
@@ -839,7 +829,7 @@ display: none !important;
 <img src="https://i.imgur.com/xRbtzsh.png" alt="Chess">
 </div>
 <div class="item-content">
-<div class="item-label">5 chess puzzles</div>
+<div class="item-label">Chess puzzles</div>
 </div>
 <div class="checkbox-wrapper">
 <input type="checkbox" id="chess" onchange="markChanged()">
@@ -851,7 +841,7 @@ display: none !important;
 <img src="https://i.imgur.com/kLEUksv.png" alt="Meditation">
 </div>
 <div class="item-content">
-<div class="item-label">Meditate (minutes)</div>
+<div class="item-label">Meditation (minutes)</div>
 </div>
 <input type="number" id="meditation-min" min="0" placeholder="17" onchange="markChanged()">
 </div>
@@ -861,11 +851,9 @@ display: none !important;
 <img src="https://i.imgur.com/OeYaj8o.png" alt="Journal">
 </div>
 <div class="item-content">
-<div class="item-label">Journal 9 min.</div>
+<div class="item-label">Journal (minutes)</div>
 </div>
-<div class="checkbox-wrapper">
-<input type="checkbox" id="journal" onchange="markChanged()">
-</div>
+<input type="number" id="journal" min="0" placeholder="9" onchange="markChanged()">
 </div>
 
 <div class="input-item">
@@ -1152,15 +1140,17 @@ document.getElementById('surprise-babe').checked = todayLog.surprise_babe || fal
 document.getElementById('jeu-societe').checked = todayLog.jeu_societe || false;
 document.getElementById('quilles').checked = todayLog.quilles || false;
 
-// Health
-document.getElementById('pushups').checked = todayLog.pushups || false;
-document.getElementById('squats').checked = todayLog.squats || false;
-document.getElementById('rope-jump').checked = todayLog.rope_jump || false;
-document.getElementById('reading').checked = todayLog.reading || false;
-document.getElementById('tsp-work').checked = todayLog.tsp_work || false;
-document.getElementById('chess').checked = todayLog.chess || false;
+// Health - Champs numériques
+document.getElementById('pushups').value = todayLog.pushups || '';
+document.getElementById('squats').value = todayLog.squats || '';
+document.getElementById('rope-jump').value = todayLog.rope_jump || '';
+document.getElementById('reading').value = todayLog.reading || '';
+document.getElementById('tsp-work').value = todayLog.tsp_work || '';
 document.getElementById('meditation-min').value = todayLog.meditation_min || '';
-document.getElementById('journal').checked = todayLog.journal || false;
+document.getElementById('journal').value = todayLog.journal || '';
+
+// Health - Checkboxes
+document.getElementById('chess').checked = todayLog.chess || false;
 document.getElementById('breathwork').checked = todayLog.breathwork || false;
 
 // TSP
@@ -1260,14 +1250,14 @@ date: today,
 surprise_babe: document.getElementById('surprise-babe').checked,
 jeu_societe: document.getElementById('jeu-societe').checked,
 quilles: document.getElementById('quilles').checked,
-pushups: document.getElementById('pushups').checked,
-squats: document.getElementById('squats').checked,
-rope_jump: document.getElementById('rope-jump').checked,
-reading: document.getElementById('reading').checked,
-tsp_work: document.getElementById('tsp-work').checked,
+pushups: parseInt(document.getElementById('pushups').value) || 0,
+squats: parseInt(document.getElementById('squats').value) || 0,
+rope_jump: parseInt(document.getElementById('rope-jump').value) || 0,
+reading: parseInt(document.getElementById('reading').value) || 0,
+tsp_work: parseInt(document.getElementById('tsp-work').value) || 0,
 chess: document.getElementById('chess').checked,
 meditation_min: parseInt(document.getElementById('meditation-min').value) || 0,
-journal: document.getElementById('journal').checked,
+journal: parseInt(document.getElementById('journal').value) || 0,
 breathwork: document.getElementById('breathwork').checked,
 video_ig: document.getElementById('video-ig').checked
 };
@@ -1397,22 +1387,24 @@ grid.innerHTML = `
 }
 
 function loadHealthStats(grid, logs) {
-let pushupDays = 0;
-let squatDays = 0;
-let ropeJumpDays = 0;
-let readingDays = 0;
-let tspDays = 0;
+let totalPushups = 0;
+let totalSquats = 0;
+let totalRopeJump = 0;
+let totalReading = 0;
+let totalTSP = 0;
 let chessDays = 0;
 let totalMeditation = 0;
+let totalJournal = 0;
 let breathworkDays = 0;
 
+// Calculer les streaks pour journal et TSP
 const sortedDates = Object.keys(logs).sort((a, b) => new Date(b) - new Date(a));
 let journalStreak = 0;
 let tspStreak = 0;
 
 for (let date of sortedDates) {
 const log = logs[date];
-if (log.journal) {
+if (log.journal && log.journal > 0) {
 journalStreak++;
 } else {
 break;
@@ -1421,7 +1413,7 @@ break;
 
 for (let date of sortedDates) {
 const log = logs[date];
-if (log.tsp_work) {
+if (log.tsp_work && log.tsp_work > 0) {
 tspStreak++;
 } else {
 break;
@@ -1430,14 +1422,15 @@ break;
 
 for (let date in logs) {
 const log = logs[date];
-if (log.pushups) pushupDays++;
-if (log.squats) squatDays++;
-if (log.rope_jump) ropeJumpDays++;
-if (log.reading) readingDays++;
-if (log.tsp_work) tspDays++;
+totalPushups += log.pushups || 0;
+totalSquats += log.squats || 0;
+totalRopeJump += log.rope_jump || 0;
+totalReading += log.reading || 0;
+totalTSP += log.tsp_work || 0;
 if (log.chess) chessDays++;
 if (log.breathwork) breathworkDays++;
 totalMeditation += log.meditation_min || 0;
+totalJournal += log.journal || 0;
 }
 
 const logCount = Object.keys(logs).length;
@@ -1451,7 +1444,7 @@ grid.innerHTML = `
 </div>
 <div class="stat-label">Push-ups</div>
 </div>
-<div class="stat-value">${pushupDays * 50}</div>
+<div class="stat-value">${totalPushups}</div>
 <div class="stat-detail">Total effectués</div>
 </div>
 <div class="stat-card">
@@ -1461,7 +1454,7 @@ grid.innerHTML = `
 </div>
 <div class="stat-label">Squats</div>
 </div>
-<div class="stat-value">${squatDays * 50}</div>
+<div class="stat-value">${totalSquats}</div>
 <div class="stat-detail">Total effectués</div>
 </div>
 <div class="stat-card">
@@ -1471,8 +1464,8 @@ grid.innerHTML = `
 </div>
 <div class="stat-label">Rope Jumping</div>
 </div>
-<div class="stat-value">${((ropeJumpDays * 5) / 60).toFixed(1)}h</div>
-<div class="stat-detail">Temps total</div>
+<div class="stat-value">${(totalRopeJump / 60).toFixed(1)}h</div>
+<div class="stat-detail">${totalRopeJump} minutes au total</div>
 </div>
 <div class="stat-card">
 <div class="stat-header">
@@ -1481,8 +1474,8 @@ grid.innerHTML = `
 </div>
 <div class="stat-label">Reading</div>
 </div>
-<div class="stat-value">${((readingDays * 36) / 60).toFixed(1)}h</div>
-<div class="stat-detail">Temps total de lecture</div>
+<div class="stat-value">${(totalReading / 60).toFixed(1)}h</div>
+<div class="stat-detail">${totalReading} minutes au total</div>
 </div>
 <div class="stat-card">
 <div class="stat-header">
@@ -1491,8 +1484,8 @@ grid.innerHTML = `
 </div>
 <div class="stat-label">The Silent Postman</div>
 </div>
-<div class="stat-value">${((tspDays * 90) / 60).toFixed(1)}h</div>
-<div class="stat-detail">Temps total • Streak: ${tspStreak} jours</div>
+<div class="stat-value">${(totalTSP / 60).toFixed(1)}h</div>
+<div class="stat-detail">${totalTSP} min au total • Streak: ${tspStreak} jours</div>
 </div>
 <div class="stat-card">
 <div class="stat-header">
@@ -1512,7 +1505,7 @@ grid.innerHTML = `
 <div class="stat-label">Meditation</div>
 </div>
 <div class="stat-value">${(totalMeditation / 60).toFixed(1)}h</div>
-<div class="stat-detail">Total • Moyenne: ${avgMeditation} min/jour</div>
+<div class="stat-detail">${totalMeditation} min au total • Moyenne: ${avgMeditation} min/jour</div>
 </div>
 <div class="stat-card">
 <div class="stat-header">
@@ -1521,8 +1514,8 @@ grid.innerHTML = `
 </div>
 <div class="stat-label">Journal</div>
 </div>
-<div class="stat-value">${journalStreak}</div>
-<div class="stat-detail">Jours d'affilée</div>
+<div class="stat-value">${(totalJournal / 60).toFixed(1)}h</div>
+<div class="stat-detail">${totalJournal} min au total • Streak: ${journalStreak} jours</div>
 </div>
 <div class="stat-card">
 <div class="stat-header">
