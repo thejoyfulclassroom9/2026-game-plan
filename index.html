@@ -888,9 +888,9 @@ stroke-dashoffset="534.07"></circle>
 </div>
 
 <div class="stats-controls">
-<button class="period-btn active" onclick="changePeriod('famille', 7)">7 jours</button>
-<button class="period-btn" onclick="changePeriod('famille', 30)">30 jours</button>
-<button class="period-btn" onclick="changePeriod('famille', 'all')">Tout</button>
+    <button class="period-btn" onclick="changePeriod('famille', 7)">7 jours</button>
+    <button class="period-btn" onclick="changePeriod('famille', 30)">30 jours</button>
+    <button class="period-btn active" onclick="changePeriod('famille', 'all')">Tout</button>
 </div>
 
 <div class="stats-grid" id="famille-stats-grid"></div>
@@ -1026,9 +1026,9 @@ stroke-dashoffset="534.07"></circle>
 </div>
 
 <div class="stats-controls">
-<button class="period-btn active" onclick="changePeriod('health', 7)">7 jours</button>
-<button class="period-btn" onclick="changePeriod('health', 30)">30 jours</button>
-<button class="period-btn" onclick="changePeriod('health', 'all')">Tout</button>
+    <button class="period-btn" onclick="changePeriod('health', 7)">7 jours</button>
+    <button class="period-btn" onclick="changePeriod('health', 30)">30 jours</button>
+    <button class="period-btn active" onclick="changePeriod('health', 'all')">Tout</button>
 </div>
 
 <div class="stats-grid" id="health-stats-grid"></div>
@@ -1106,9 +1106,9 @@ stroke-dashoffset="534.07"></circle>
 </div>
 
 <div class="stats-controls">
-<button class="period-btn active" onclick="changePeriod('tsp', 7)">7 jours</button>
-<button class="period-btn" onclick="changePeriod('tsp', 30)">30 jours</button>
-<button class="period-btn" onclick="changePeriod('tsp', 'all')">Tout</button>
+    <button class="period-btn" onclick="changePeriod('health', 7)">7 jours</button>
+    <button class="period-btn" onclick="changePeriod('health', 30)">30 jours</button>
+    <button class="period-btn active" onclick="changePeriod('health', 'all')">Tout</button>
 </div>
 
 <div class="stats-grid" id="tsp-stats-grid"></div>
@@ -1259,9 +1259,9 @@ const database = getDatabase(app);
 // ========================================
 let hasChanges = false;
 let currentPeriods = {
-famille: 7,
-health: 7,
-tsp: 7
+famille: 'all',
+    health: 'all',
+    tsp: 'all'
 };
 let allData = {
 dailyLogs: {},
@@ -1356,26 +1356,40 @@ document.getElementById('video-ig').checked = todayLog.video_ig || false;
 }
 
 function loadProducts() {
-const productsList = document.getElementById('products-list');
-productsList.innerHTML = '';
+    const productsList = document.getElementById('products-list');
+    productsList.innerHTML = '';
 
-const products = allData.products;
-for (let productId in products) {
-const product = products[productId];
-const productDiv = document.createElement('div');
-productDiv.className = 'product-item';
-productDiv.innerHTML = `
-<div class="product-info">
-<div class="product-name">${product.name}</div>
-<div class="product-price">${product.price}$</div>
-</div>
-<div class="product-sales">
-<input type="number" id="product-sale-${productId}" min="0" value="0" onchange="window.markChanged()">
-<button class="delete-product-btn" onclick="window.deleteProduct('${productId}', '${product.name}')" title="Supprimer ce produit">×</button>
-</div>
-`;
-productsList.appendChild(productDiv);
-}
+    const today = getTodayDate();
+    const products = allData.products;
+    
+    for (let productId in products) {
+        const product = products[productId];
+        
+        // Chercher si des ventes existent déjà aujourd'hui pour ce produit
+        let todaySales = 0;
+        const sales = allData.sales;
+        for (let saleId in sales) {
+            const sale = sales[saleId];
+            if (sale.product_id === productId && sale.date === today) {
+                todaySales = sale.units_sold;
+                break;
+            }
+        }
+        
+        const productDiv = document.createElement('div');
+        productDiv.className = 'product-item';
+        productDiv.innerHTML = `
+            <div class="product-info">
+                <div class="product-name">${product.name}</div>
+                <div class="product-price">${product.price}$</div>
+            </div>
+            <div class="product-sales">
+                <input type="number" id="product-sale-${productId}" min="0" value="${todaySales}" onchange="window.markChanged()">
+                <button class="delete-product-btn" onclick="window.deleteProduct('${productId}', '${product.name}')" title="Supprimer ce produit">×</button>
+            </div>
+        `;
+        productsList.appendChild(productDiv);
+    }
 }
 
 // ========================================
