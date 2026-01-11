@@ -79,6 +79,119 @@ letter-spacing: 3px;
 text-transform: uppercase;
 }
 
+/* PROJECT 99 SECTION */
+.project99-container {
+max-width: 500px;
+margin: 30px auto 40px;
+padding: 30px;
+background: rgba(255, 255, 255, 0.03);
+border: 2px solid var(--border-color);
+border-radius: 20px;
+text-align: center;
+animation: fadeIn 1s ease-out;
+position: relative;
+overflow: hidden;
+}
+
+.project99-container::before {
+content: '';
+position: absolute;
+top: -50%;
+left: -50%;
+width: 200%;
+height: 200%;
+background: radial-gradient(circle, rgba(255, 190, 11, 0.05) 0%, transparent 70%);
+animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+0%, 100% { transform: scale(1); opacity: 0.5; }
+50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.project99-title {
+font-family: 'Orbitron', sans-serif;
+font-size: 1.8rem;
+font-weight: 900;
+background: linear-gradient(135deg, var(--accent-yellow), var(--accent-magenta));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+margin-bottom: 20px;
+letter-spacing: 2px;
+position: relative;
+z-index: 1;
+}
+
+.progress-circle-wrapper {
+position: relative;
+width: 200px;
+height: 200px;
+margin: 20px auto;
+z-index: 1;
+}
+
+.progress-circle {
+transform: rotate(-90deg);
+}
+
+.progress-circle-bg {
+fill: none;
+stroke: var(--border-color);
+stroke-width: 12;
+}
+
+.progress-circle-fill {
+fill: none;
+stroke: url(#gradient);
+stroke-width: 12;
+stroke-linecap: round;
+transition: stroke-dashoffset 1s ease-out;
+filter: drop-shadow(0 0 8px rgba(255, 190, 11, 0.6));
+}
+
+.progress-text {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+font-family: 'Orbitron', sans-serif;
+font-size: 2.5rem;
+font-weight: 900;
+color: var(--accent-yellow);
+text-shadow: 0 0 20px rgba(255, 190, 11, 0.8);
+}
+
+.progress-label {
+position: absolute;
+bottom: 45px;
+left: 50%;
+transform: translateX(-50%);
+font-size: 0.8rem;
+color: var(--text-gray);
+text-transform: uppercase;
+letter-spacing: 2px;
+}
+
+.project99-quote {
+font-size: 1rem;
+font-style: italic;
+color: var(--text-white);
+margin-top: 20px;
+padding: 15px;
+background: rgba(255, 190, 11, 0.05);
+border-radius: 10px;
+position: relative;
+z-index: 1;
+}
+
+.project99-author {
+font-size: 0.85rem;
+color: var(--accent-yellow);
+margin-top: 8px;
+font-weight: bold;
+}
+
 .daily-quote {
 max-width: 600px;
 margin: 30px auto;
@@ -634,6 +747,15 @@ bottom: 20px;
 right: 20px;
 padding: 15px 25px;
 }
+
+.progress-circle-wrapper {
+width: 180px;
+height: 180px;
+}
+
+.progress-text {
+font-size: 2rem;
+}
 }
 
 .hidden {
@@ -648,6 +770,32 @@ display: none !important;
 <div class="header">
 <h1>2026 GAME PLAN</h1>
 <div class="subtitle">Family • Health • Business</div>
+</div>
+
+<!-- PROJECT 99 SECTION -->
+<div class="project99-container">
+<div class="project99-title">PROJECT 99</div>
+<div class="progress-circle-wrapper">
+<svg class="progress-circle" width="200" height="200" viewBox="0 0 200 200">
+<defs>
+<linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:#ffbe0b;stop-opacity:1" />
+<stop offset="100%" style="stop-color:#ff006e;stop-opacity:1" />
+</linearGradient>
+</defs>
+<circle class="progress-circle-bg" cx="100" cy="100" r="85"></circle>
+<circle class="progress-circle-fill" cx="100" cy="100" r="85" 
+id="progress-circle-fill"
+stroke-dasharray="534.07" 
+stroke-dashoffset="534.07"></circle>
+</svg>
+<div class="progress-text" id="project99-days">0</div>
+<div class="progress-label">DAYS</div>
+</div>
+<div class="project99-quote">
+"Can you do it? It's not easy, but it's worth it!"
+<div class="project99-author">— Stéphane</div>
+</div>
 </div>
 
 <!-- Daily Quote -->
@@ -1045,6 +1193,52 @@ function displayDailyQuote() {
 }
 
 // ========================================
+// PROJECT 99 CALCULATION
+// ========================================
+function calculateProject99Days(dailyLogs) {
+    let completedDays = 0;
+    
+    // Project 99 criteria:
+    // 1. TSP Work >= 90 minutes
+    // 2. Push-ups >= 50
+    // 3. Meditation >= 20 minutes
+    // 4. Reading >= 60 minutes
+    // 5. Rope Jump >= 5 minutes
+    
+    for (let date in dailyLogs) {
+        const log = dailyLogs[date];
+        
+        const tspComplete = (log.tsp_work || 0) >= 90;
+        const pushupsComplete = (log.pushups || 0) >= 50;
+        const meditationComplete = (log.meditation_min || 0) >= 20;
+        const readingComplete = (log.reading || 0) >= 60;
+        const ropeComplete = (log.rope_jump || 0) >= 5;
+        
+        if (tspComplete && pushupsComplete && meditationComplete && readingComplete && ropeComplete) {
+            completedDays++;
+        }
+    }
+    
+    return completedDays;
+}
+
+function updateProject99Display(completedDays) {
+    const daysElement = document.getElementById('project99-days');
+    const circleElement = document.getElementById('progress-circle-fill');
+    
+    // Update number
+    daysElement.textContent = completedDays;
+    
+    // Calculate progress (circumference = 2 * π * r = 2 * π * 85 = 534.07)
+    const circumference = 534.07;
+    const progress = completedDays / 99;
+    const offset = circumference * (1 - progress);
+    
+    // Animate the circle
+    circleElement.style.strokeDashoffset = offset;
+}
+
+// ========================================
 // CONFIGURATION FIREBASE
 // ========================================
 const firebaseConfig = {
@@ -1126,6 +1320,9 @@ sales: data.sales || {}
 };
 loadTodayData();
 loadProducts();
+// Update Project 99 display
+const completedDays = calculateProject99Days(allData.dailyLogs);
+updateProject99Display(completedDays);
 }
 });
 }
