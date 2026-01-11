@@ -1450,65 +1450,93 @@ alert('Erreur lors de la suppression du produit');
 // SAUVEGARDER LES DONNÉES
 // ========================================
 window.saveData = async function() {
-const saveBtn = document.getElementById('save-btn');
-saveBtn.classList.add('saving');
-saveBtn.textContent = 'SAUVEGARDE...';
+    const saveBtn = document.getElementById('save-btn');
+    saveBtn.classList.add('saving');
+    saveBtn.textContent = 'SAUVEGARDE...';
 
-const today = getTodayDate();
+    const today = getTodayDate();
 
-const dailyData = {
-date: today,
-surprise_babe: document.getElementById('surprise-babe').checked,
-jeu_societe: document.getElementById('jeu-societe').checked,
-quilles: document.getElementById('quilles').checked,
-pushups: parseInt(document.getElementById('pushups').value) || 0,
-squats: parseInt(document.getElementById('squats').value) || 0,
-rope_jump: parseInt(document.getElementById('rope-jump').value) || 0,
-reading: parseInt(document.getElementById('reading').value) || 0,
-tsp_work: parseInt(document.getElementById('tsp-work').value) || 0,
-chess: document.getElementById('chess').checked,
-meditation_min: parseInt(document.getElementById('meditation-min').value) || 0,
-journal: parseInt(document.getElementById('journal').value) || 0,
-breathwork: document.getElementById('breathwork').checked,
-video_ig: document.getElementById('video-ig').checked
-};
+    const dailyData = {
+        date: today,
+        surprise_babe: document.getElementById('surprise-babe').checked,
+        jeu_societe: document.getElementById('jeu-societe').checked,
+        quilles: document.getElementById('quilles').checked,
+        pushups: parseInt(document.getElementById('pushups').value) || 0,
+        squats: parseInt(document.getElementById('squats').value) || 0,
+        rope_jump: parseInt(document.getElementById('rope-jump').value) || 0,
+        reading: parseInt(document.getElementById('reading').value) || 0,
+        tsp_work: parseInt(document.getElementById('tsp-work').value) || 0,
+        chess: document.getElementById('chess').checked,
+        meditation_min: parseInt(document.getElementById('meditation-min').value) || 0,
+        journal: parseInt(document.getElementById('journal').value) || 0,
+        breathwork: document.getElementById('breathwork').checked,
+        video_ig: document.getElementById('video-ig').checked
+    };
 
-const salesData = [];
-const products = allData.products;
-for (let productId in products) {
-const unitsInput = document.getElementById(`product-sale-${productId}`);
-const units = parseInt(unitsInput.value) || 0;
-if (units > 0) {
-salesData.push({
-date: today,
-product_id: productId,
-product_name: products[productId].name,
-units_sold: units
-});
-}
-}
+    try {
+        // Sauvegarder les logs quotidiens
+        await set(ref(database, `dailyLogs/${today}`), dailyData);
 
-try {
-await set(ref(database, `dailyLogs/${today}`), dailyData);
+        // Gérer les ventes de produits
+        const { ref: dbRef, remove } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js');
+        const products = allData.products;
+        
+        for (let productId in products) {
+            const unitsInput = document.getElementById(`product-sale-${productId}`);
+            const units = parseInt(unitsInput.value) || 0;
+            
+            // Trouver si une vente existe déjà pour ce produit aujourd'hui
+            let existingSaleId = null;
+            const sales = allData.sales;
+            for (let saleId in sales) {
+                const sale = sales[saleId];
+                if (sale.product_id === productId && sale.date === today) {
+                    existingSaleId = saleId;
+                    break;
+                }
+            }
+            
+            if (units > 0) {
+                // Il y a des ventes à enregistrer
+                if (existingSaleId) {
+                    // Mettre à jour la vente existante
+                    await set(dbRef(database, `sales/${existingSaleId}`), {
+                        date: today,
+                        product_id: productId,
+                        product_name: products[productId].name,
+                        units_sold: units
+                    });
+                } else {
+                    // Créer une nouvelle vente
+                    const newSaleRef = push(ref(database, 'sales'));
+                    await set(newSaleRef, {
+                        date: today,
+                        product_id: productId,
+                        product_name: products[productId].name,
+                        units_sold: units
+                    });
+                }
+            } else {
+                // Pas de ventes (0 unités) - supprimer l'entrée si elle existe
+                if (existingSaleId) {
+                    await remove(dbRef(database, `sales/${existingSaleId}`));
+                }
+            }
+        }
 
-for (let sale of salesData) {
-const newSaleRef = push(ref(database, 'sales'));
-await set(newSaleRef, sale);
-}
-
-hasChanges = false;
-saveBtn.textContent = 'SAUVEGARDÉ!';
-setTimeout(() => {
-saveBtn.textContent = 'SAUVEGARDER';
-saveBtn.classList.remove('saving');
-saveBtn.style.display = 'none';
-}, 2000);
-} catch (error) {
-console.error('Error saving data:', error);
-alert('Erreur lors de la sauvegarde');
-saveBtn.textContent = 'ERREUR';
-saveBtn.classList.remove('saving');
-}
+        hasChanges = false;
+        saveBtn.textContent = 'SAUVEGARDÉ!';
+        setTimeout(() => {
+            saveBtn.textContent = 'SAUVEGARDER';
+            saveBtn.classList.remove('saving');
+            saveBtn.style.display = 'none';
+        }, 2000);
+    } catch (error) {
+        console.error('Error saving data:', error);
+        alert('Erreur lors de la sauvegarde');
+        saveBtn.textContent = 'ERREUR';
+        saveBtn.classList.remove('saving');
+    }
 };
 
 // ========================================
