@@ -1203,7 +1203,7 @@ function calculateProject99Days(dailyLogs) {
     // 2. Push-ups >= 50
     // 3. Meditation >= 20 minutes
     // 4. Reading >= 60 minutes
-    // 5. Rope Jump >= 5 minutes
+    // 5. Rope Jump >= 1 minute
     
     for (let date in dailyLogs) {
         const log = dailyLogs[date];
@@ -1212,7 +1212,7 @@ function calculateProject99Days(dailyLogs) {
         const pushupsComplete = (log.pushups || 0) >= 50;
         const meditationComplete = (log.meditation_min || 0) >= 20;
         const readingComplete = (log.reading || 0) >= 60;
-        const ropeComplete = (log.rope_jump || 0) >= 5;
+        const ropeComplete = (log.rope_jump || 0) >= 1;
         
         if (tspComplete && pushupsComplete && meditationComplete && readingComplete && ropeComplete) {
             completedDays++;
