@@ -330,6 +330,10 @@ animation: slideInLeft 0.5s ease-out backwards;
 .input-item:nth-child(7) { animation-delay: 0.35s; }
 .input-item:nth-child(8) { animation-delay: 0.4s; }
 .input-item:nth-child(9) { animation-delay: 0.45s; }
+.input-item:nth-child(10) { animation-delay: 0.5s; }
+.input-item:nth-child(11) { animation-delay: 0.55s; }
+.input-item:nth-child(12) { animation-delay: 0.6s; }
+.input-item:nth-child(13) { animation-delay: 0.65s; }
 
 .input-item:hover {
 background: rgba(255, 255, 255, 0.05);
@@ -489,6 +493,10 @@ animation: fadeIn 0.5s ease-out backwards;
 .stat-card:nth-child(7) { animation-delay: 0.35s; }
 .stat-card:nth-child(8) { animation-delay: 0.4s; }
 .stat-card:nth-child(9) { animation-delay: 0.45s; }
+.stat-card:nth-child(10) { animation-delay: 0.5s; }
+.stat-card:nth-child(11) { animation-delay: 0.55s; }
+.stat-card:nth-child(12) { animation-delay: 0.6s; }
+.stat-card:nth-child(13) { animation-delay: 0.65s; }
 
 .stat-card:hover {
 background: rgba(255, 255, 255, 0.05);
@@ -934,6 +942,16 @@ stroke-dashoffset="534.07"></circle>
 
 <div class="input-item">
 <div class="icon-circle">
+<img src="https://i.imgur.com/5683PK6.png" alt="Pull-ups">
+</div>
+<div class="item-content">
+<div class="item-label">Pull-ups</div>
+</div>
+<input type="number" id="pullups" min="0" placeholder="10" onchange="markChanged()">
+</div>
+
+<div class="input-item">
+<div class="icon-circle">
 <img src="https://i.imgur.com/4PJk9dV.png" alt="Squats">
 </div>
 <div class="item-content">
@@ -950,6 +968,38 @@ stroke-dashoffset="534.07"></circle>
 <div class="item-label">Rope jumping (minutes)</div>
 </div>
 <input type="number" id="rope-jump" min="0" placeholder="5" onchange="markChanged()">
+</div>
+
+<div class="input-item">
+<div class="icon-circle">
+<img src="https://i.imgur.com/QLPX5Hn.png" alt="Hanging">
+</div>
+<div class="item-content">
+<div class="item-label">Hanging (minutes)</div>
+</div>
+<input type="number" id="hanging" min="0" placeholder="3" onchange="markChanged()">
+</div>
+
+<div class="input-item">
+<div class="icon-circle">
+<img src="https://i.imgur.com/7krVciP.png" alt="Deep squats">
+</div>
+<div class="item-content">
+<div class="item-label">Deep squats (minutes)</div>
+</div>
+<input type="number" id="deep-squats" min="0" placeholder="5" onchange="markChanged()">
+</div>
+
+<div class="input-item">
+<div class="icon-circle">
+<img src="https://i.imgur.com/dCciAIw.png" alt="Rushfit">
+</div>
+<div class="item-content">
+<div class="item-label">Rushfit</div>
+</div>
+<div class="checkbox-wrapper">
+<input type="checkbox" id="rushfit" onchange="markChanged()">
+</div>
 </div>
 
 <div class="input-item">
@@ -1193,26 +1243,16 @@ function displayDailyQuote() {
 }
 
 // ========================================
-// PROJECT 99 CALCULATION
+// PROJECT 99 CALCULATION (SIMPLIFIED)
 // ========================================
 function calculateProject99Days(dailyLogs) {
     let completedDays = 0;
     
-    // Project 99 criteria (UPDATED - removed rope jump):
-    // 1. TSP Work >= 90 minutes
-    // 2. Push-ups >= 50
-    // 3. Meditation >= 20 minutes
-    // 4. Reading >= 60 minutes
-    
+    // Project 99 critère simplifié : TSP Work >= 90 minutes
     for (let date in dailyLogs) {
         const log = dailyLogs[date];
         
-        const tspComplete = (log.tsp_work || 0) >= 90;
-        const pushupsComplete = (log.pushups || 0) >= 50;
-        const meditationComplete = (log.meditation_min || 0) >= 20;
-        const readingComplete = (log.reading || 0) >= 60;
-        
-        if (tspComplete && pushupsComplete && meditationComplete && readingComplete) {
+        if ((log.tsp_work || 0) >= 90) {
             completedDays++;
         }
     }
@@ -1337,8 +1377,11 @@ document.getElementById('quilles').checked = todayLog.quilles || false;
 
 // Health - Champs numériques
 document.getElementById('pushups').value = todayLog.pushups || '';
+document.getElementById('pullups').value = todayLog.pullups || '';
 document.getElementById('squats').value = todayLog.squats || '';
 document.getElementById('rope-jump').value = todayLog.rope_jump || '';
+document.getElementById('hanging').value = todayLog.hanging || '';
+document.getElementById('deep-squats').value = todayLog.deep_squats || '';
 document.getElementById('reading').value = todayLog.reading || '';
 document.getElementById('tsp-work').value = todayLog.tsp_work || '';
 document.getElementById('meditation-min').value = todayLog.meditation_min || '';
@@ -1346,6 +1389,7 @@ document.getElementById('journal').value = todayLog.journal || '';
 
 // Health - Checkboxes
 document.getElementById('chess').checked = todayLog.chess || false;
+document.getElementById('rushfit').checked = todayLog.rushfit || false;
 document.getElementById('breathwork').checked = todayLog.breathwork || false;
 
 // TSP
@@ -1460,8 +1504,12 @@ window.saveData = async function() {
         jeu_societe: document.getElementById('jeu-societe').checked,
         quilles: document.getElementById('quilles').checked,
         pushups: parseInt(document.getElementById('pushups').value) || 0,
+        pullups: parseInt(document.getElementById('pullups').value) || 0,
         squats: parseInt(document.getElementById('squats').value) || 0,
         rope_jump: parseInt(document.getElementById('rope-jump').value) || 0,
+        hanging: parseInt(document.getElementById('hanging').value) || 0,
+        deep_squats: parseInt(document.getElementById('deep-squats').value) || 0,
+        rushfit: document.getElementById('rushfit').checked,
         reading: parseInt(document.getElementById('reading').value) || 0,
         tsp_work: parseInt(document.getElementById('tsp-work').value) || 0,
         chess: document.getElementById('chess').checked,
@@ -1625,8 +1673,12 @@ grid.innerHTML = `
 
 function loadHealthStats(grid, logs) {
 let totalPushups = 0;
+let totalPullups = 0;
 let totalSquats = 0;
 let totalRopeJump = 0;
+let totalHanging = 0;
+let totalDeepSquats = 0;
+let rushfitDays = 0;
 let totalReading = 0;
 let totalTSP = 0;
 let chessDays = 0;
@@ -1660,8 +1712,12 @@ break;
 for (let date in logs) {
 const log = logs[date];
 totalPushups += log.pushups || 0;
+totalPullups += log.pullups || 0;
 totalSquats += log.squats || 0;
 totalRopeJump += log.rope_jump || 0;
+totalHanging += log.hanging || 0;
+totalDeepSquats += log.deep_squats || 0;
+if (log.rushfit) rushfitDays++;
 totalReading += log.reading || 0;
 totalTSP += log.tsp_work || 0;
 if (log.chess) chessDays++;
@@ -1687,6 +1743,16 @@ grid.innerHTML = `
 <div class="stat-card">
 <div class="stat-header">
 <div class="stat-icon">
+<img src="https://i.imgur.com/5683PK6.png" alt="Pull-ups">
+</div>
+<div class="stat-label">Pull-ups</div>
+</div>
+<div class="stat-value">${totalPullups}</div>
+<div class="stat-detail">Total effectués</div>
+</div>
+<div class="stat-card">
+<div class="stat-header">
+<div class="stat-icon">
 <img src="https://i.imgur.com/4PJk9dV.png" alt="Squats">
 </div>
 <div class="stat-label">Squats</div>
@@ -1703,6 +1769,36 @@ grid.innerHTML = `
 </div>
 <div class="stat-value">${(totalRopeJump / 60).toFixed(1)}h</div>
 <div class="stat-detail">${totalRopeJump} minutes au total</div>
+</div>
+<div class="stat-card">
+<div class="stat-header">
+<div class="stat-icon">
+<img src="https://i.imgur.com/QLPX5Hn.png" alt="Hanging">
+</div>
+<div class="stat-label">Hanging</div>
+</div>
+<div class="stat-value">${(totalHanging / 60).toFixed(1)}h</div>
+<div class="stat-detail">${totalHanging} minutes au total</div>
+</div>
+<div class="stat-card">
+<div class="stat-header">
+<div class="stat-icon">
+<img src="https://i.imgur.com/7krVciP.png" alt="Deep Squats">
+</div>
+<div class="stat-label">Deep Squats</div>
+</div>
+<div class="stat-value">${(totalDeepSquats / 60).toFixed(1)}h</div>
+<div class="stat-detail">${totalDeepSquats} minutes au total</div>
+</div>
+<div class="stat-card">
+<div class="stat-header">
+<div class="stat-icon">
+<img src="https://i.imgur.com/dCciAIw.png" alt="Rushfit">
+</div>
+<div class="stat-label">Rushfit</div>
+</div>
+<div class="stat-value">${rushfitDays}</div>
+<div class="stat-detail">Jours d'entraînement</div>
 </div>
 <div class="stat-card">
 <div class="stat-header">
